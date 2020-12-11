@@ -36,3 +36,10 @@ docker-compose up
 * check that database and the tables were created and populated with data
 ![pgAdmin-data](docs/images/pgAdmin-data.png)
 
+### Run application
+
+```
+cd src\Catalog\Catalog.Api
+dotnet build
+dotnet run
+```
