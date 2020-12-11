@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Catalog.Api.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Catalog.Api
 {
@@ -25,6 +20,7 @@ namespace Catalog.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +30,8 @@ namespace Catalog.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCustomSwagger();
 
             app.UseRouting();
 
