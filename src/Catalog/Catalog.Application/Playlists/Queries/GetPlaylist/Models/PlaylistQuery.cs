@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist.Models
 {
