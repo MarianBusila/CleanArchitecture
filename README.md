@@ -43,3 +43,8 @@ cd src\Catalog\Catalog.Api
 dotnet build
 dotnet run
 ```
+
+## Notes
+
+- IUrlHelper is used to generate links inside the application
+- the APIs allow for filtering which is passed along to the repository

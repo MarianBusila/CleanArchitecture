@@ -18,10 +18,14 @@ namespace Catalog.Api.Controllers
     {
 
         private readonly IMediator _mediator;
-        public PlaylistsController(IMediator mediator)
+        private readonly IUrlHelper _urlHelper;
+
+        public PlaylistsController(IMediator mediator, IUrlHelper urlHelper)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
         }
+
         [HttpGet(Name = nameof(GetPlaylists))]
         [ProducesResponseType(typeof(IEnumerable<PlaylistDetail>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPlaylists([FromQuery] PlaylistQuery playlistQuery)

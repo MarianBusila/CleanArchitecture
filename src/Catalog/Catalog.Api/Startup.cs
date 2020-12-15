@@ -30,6 +30,7 @@ namespace Catalog.Api
         {
             services.ConfigureSql(_configuration.GetConnectionString("chinook"), _environment.IsDevelopment());
             services.ConfigureApplication();
+            services.ConfigureUrlHelper();
             services.AddControllers();
             services.ConfigureSwagger();
             services.AddLogging(builder => 
