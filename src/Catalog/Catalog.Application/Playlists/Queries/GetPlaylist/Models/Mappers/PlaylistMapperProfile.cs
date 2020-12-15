@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Catalog.Domain.Models;
+using Common.System.Collections.Generic;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist.Models.Mappers
 {
@@ -13,7 +12,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist.Models.Mappers
             CreateMap<Playlist, PlaylistDetail>()
                 .ForMember(destination => destination.TrackCount, options => options.MapFrom(source => source.PlaylistTracks.Count));
 
-            CreateMap<IEnumerable<Playlist>, PlaylistDetail>();
+            CreateMap<IPagedCollection<Playlist>, PlaylistDetail>();
         }
         
     }

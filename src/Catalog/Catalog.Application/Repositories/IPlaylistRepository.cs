@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Domain.Models;
+using Common.System.Collections.Generic;
 
 namespace Catalog.Application.Repositories
 {
     public interface IPlaylistRepository
     {
 
-        Task<IEnumerable<Playlist>> GetPlaylists(IPlaylistFilter filter);
+        Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize);
 
     }
 }

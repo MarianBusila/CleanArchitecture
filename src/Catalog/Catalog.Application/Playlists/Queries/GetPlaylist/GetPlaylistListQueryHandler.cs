@@ -7,6 +7,7 @@ using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
+using Common.System.Collections.Generic;
 using MediatR;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist
@@ -34,10 +35,10 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 .WhereTrackIdEquals(request.TrackId)
                 .WhereNameLike(request.Name);
 
-            IEnumerable<Playlist> playlistsDomain = await _playlistRepository.GetPlaylists(filter);
+            IPagedCollection<Playlist> playlistsDomain = await _playlistRepository.GetPlaylists(filter, request.PageNumber, request.PageSize);
 
             var playlists = _mapper.Map<IReadOnlyList<PlaylistDetail>>(playlistsDomain);
-            return playlists;
+            return new PagedCollection<PlaylistDetail>(playlists, playlistsDomain.ItemCount, playlistsDomain.CurrentPageNumber, playlistsDomain.PageSize);
         }
 
     }

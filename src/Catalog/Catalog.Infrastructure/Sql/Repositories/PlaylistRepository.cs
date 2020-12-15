@@ -6,6 +6,7 @@ using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
 using Catalog.Infrastructure.Sql.Filters;
+using Common.System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Repositories
@@ -20,7 +21,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
             _playlistDbContext = playlistDbContext ?? throw new ArgumentNullException(nameof(playlistDbContext));
         }
 
-        public async Task<IEnumerable<Playlist>> GetPlaylists(IPlaylistFilter filter)
+        public async Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize)
         {
             var linqPlaylistFilter = filter as LinqPlaylistFilter;
             if (linqPlaylistFilter is null)
@@ -30,7 +31,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 .Playlists
                 .Where(linqPlaylistFilter.Filter)
                 .Include(e => e.PlaylistTracks)
-                .ToListAsync();
+                .ToPagedCollectionAsync(pageNumber, pageSize);
         }
 
     }
