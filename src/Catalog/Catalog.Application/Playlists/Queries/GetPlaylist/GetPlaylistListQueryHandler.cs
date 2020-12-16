@@ -7,12 +7,11 @@ using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
-using Common.System.Collections.Generic;
 using MediatR;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist
 {
-    public sealed class GetPlaylistListQueryHandler : IRequestHandler<GetPlaylistListQuery, IEnumerable<PlaylistDetail>>
+    public sealed class GetPlaylistListQueryHandler : IRequestHandler<GetPlaylistListQuery, IPagedCollection<PlaylistDetail>>
     {
 
         private readonly IPlaylistRepository _playlistRepository;
@@ -26,7 +25,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<PlaylistDetail>> Handle(GetPlaylistListQuery request, CancellationToken cancellationToken)
+        public async Task<IPagedCollection<PlaylistDetail>> Handle(GetPlaylistListQuery request, CancellationToken cancellationToken)
         {
             if (request is null)
                 throw new ArgumentNullException(nameof(request));

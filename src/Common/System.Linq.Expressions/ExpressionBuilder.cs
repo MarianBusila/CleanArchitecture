@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Common.System.Linq.Expressions
+namespace System.Linq.Expressions
 {
     public static class ExpressionBuilder
     {

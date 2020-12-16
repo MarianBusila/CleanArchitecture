@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Common.System.Collections.Generic
+﻿namespace System.Collections.Generic
 {
     public interface IPagedCollection<T> : IEnumerable<T>
     {

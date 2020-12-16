@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
+﻿using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
+using System.Collections.Generic;
 using MediatR;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist
 {
-    public sealed class GetPlaylistListQuery : IRequest<IEnumerable<PlaylistDetail>>
+    public sealed class GetPlaylistListQuery : IRequest<IPagedCollection<PlaylistDetail>>
     {
         public string Name { get; }
         public string Order { get; }

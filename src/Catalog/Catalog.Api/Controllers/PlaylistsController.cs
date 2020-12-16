@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Queries.GetPlaylist;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
@@ -30,8 +29,8 @@ namespace Catalog.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<PlaylistDetail>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPlaylists([FromQuery] PlaylistQuery playlistQuery)
         {
-            var playlists = await _mediator.Send(new GetPlaylistListQuery(playlistQuery));
-            return Ok(playlists);
+            IPagedCollection<PlaylistDetail> playlists = await _mediator.Send(new GetPlaylistListQuery(playlistQuery));
+            return this.OkWithPageHeader(playlists, nameof(GetPlaylists), playlistQuery, _urlHelper);
         }
     }
 }

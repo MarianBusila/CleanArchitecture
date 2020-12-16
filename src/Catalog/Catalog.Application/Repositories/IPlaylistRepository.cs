@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Domain.Models;
-using Common.System.Collections.Generic;
 
 namespace Catalog.Application.Repositories
 {

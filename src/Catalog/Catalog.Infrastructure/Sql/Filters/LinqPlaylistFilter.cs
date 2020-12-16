@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Domain.Models;
-using Common.System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Filters

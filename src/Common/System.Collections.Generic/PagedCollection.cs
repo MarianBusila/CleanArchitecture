@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using NotImplementedException = System.NotImplementedException;
+﻿using System.Linq;
 
-namespace Common.System.Collections.Generic
+namespace System.Collections.Generic
 {
     public class PagedCollection<T> : IPagedCollection<T>
     {

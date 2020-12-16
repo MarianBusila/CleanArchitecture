@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Catalog.Domain.Models;
-using Common.System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Catalog.Application.Playlists.Queries.GetPlaylist.Models.Mappers
 {
