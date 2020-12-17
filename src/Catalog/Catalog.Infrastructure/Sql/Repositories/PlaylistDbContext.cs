@@ -9,6 +9,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
         public DbSet<Playlist> Playlists { get; set; } = null;
         public DbSet<PlaylistTrack> PlaylistTracks { get; set; } = null;
+        public DbSet<Track> Tracks { get; set; } = null;
 
         public PlaylistDbContext(DbContextOptions<PlaylistDbContext> options) : base(options)
         {
