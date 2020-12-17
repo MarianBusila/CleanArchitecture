@@ -28,6 +28,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
             return await _playlistDbContext
                 .Playlists
+                .TagWithQueryName(nameof(GetPlaylists))
                 .Where(linqPlaylistFilter.Filter)
                 .Include(e => e.PlaylistTracks)
                 .ToPagedCollectionAsync(pageNumber, pageSize);
@@ -37,6 +38,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
         {
             return await _playlistDbContext
                 .Playlists
+                .TagWithQueryName(nameof(GetPlaylist))
                 .Where(playlist => playlist.Id == playlistId)
                 .Include(e => e.PlaylistTracks)
                 .FirstOrDefaultAsync();
