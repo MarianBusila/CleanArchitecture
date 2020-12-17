@@ -10,8 +10,8 @@ namespace Catalog.Application.Repositories
     public interface IPlaylistRepository
     {
 
-        Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize);
-        Task<Playlist> GetPlaylist(int playlistId);
+        Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken);
+        Task<Playlist> GetPlaylist(int playlistId, CancellationToken cancellationToken);
 
         Task CreatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
 

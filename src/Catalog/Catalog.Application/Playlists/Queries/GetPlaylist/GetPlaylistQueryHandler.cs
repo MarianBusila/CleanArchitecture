@@ -27,7 +27,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 throw new ArgumentNullException(nameof(request));
 
 
-            Playlist playlistDomain = await _playlistRepository.GetPlaylist(request.PlaylistId);
+            Playlist playlistDomain = await _playlistRepository.GetPlaylist(request.PlaylistId, cancellationToken);
             return playlistDomain == null ? null : _mapper.Map<PlaylistDetail>(playlistDomain);
         }
 

@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Microsoft.EntityFrameworkCore
 {
     public static class IQueryableExtensions
     {
-        public static Task<IPagedCollection<T>> ToPagedCollectionAsync<T>(this IQueryable<T> source, int pageNumber, int pageSize)
+        public static Task<IPagedCollection<T>> ToPagedCollectionAsync<T>(this IQueryable<T> source, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source), "Value may not be null");
@@ -20,12 +21,12 @@ namespace Microsoft.EntityFrameworkCore
 
             async Task<IPagedCollection<T>> ToPagedCollectionAsync()
             {
-                var itemCount = await source.CountAsync();
+                int itemCount = await source.CountAsync(cancellationToken);
 
-                var items = await source
+                List<T> items = await source
                     .Skip(pageSize * (pageNumber - 1))
                     .Take(pageSize)
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
                 return new PagedCollection<T>(items, itemCount, pageNumber, pageSize);
             }

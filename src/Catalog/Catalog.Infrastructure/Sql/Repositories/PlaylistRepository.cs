@@ -21,7 +21,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
             _playlistDbContext = playlistDbContext ?? throw new ArgumentNullException(nameof(playlistDbContext));
         }
 
-        public async Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize)
+        public async Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var linqPlaylistFilter = filter as LinqPlaylistFilter;
             if (linqPlaylistFilter is null)
@@ -32,17 +32,17 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 .TagWithQueryName(nameof(GetPlaylists))
                 .Where(linqPlaylistFilter.Filter)
                 .Include(e => e.PlaylistTracks)
-                .ToPagedCollectionAsync(pageNumber, pageSize);
+                .ToPagedCollectionAsync(pageNumber, pageSize, cancellationToken);
         }
 
-        public async Task<Playlist> GetPlaylist(int playlistId)
+        public async Task<Playlist> GetPlaylist(int playlistId, CancellationToken cancellationToken)
         {
             return await _playlistDbContext
                 .Playlists
                 .TagWithQueryName(nameof(GetPlaylist))
                 .Where(playlist => playlist.Id == playlistId)
                 .Include(e => e.PlaylistTracks)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task CreatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)

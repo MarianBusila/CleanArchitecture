@@ -34,7 +34,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 .WhereTrackIdEquals(request.TrackId)
                 .WhereNameLike(request.Name);
 
-            IPagedCollection<Playlist> playlistsDomain = await _playlistRepository.GetPlaylists(filter, request.PageNumber, request.PageSize);
+            IPagedCollection<Playlist> playlistsDomain = await _playlistRepository.GetPlaylists(filter, request.PageNumber, request.PageSize, cancellationToken);
 
             var playlists = _mapper.Map<IReadOnlyList<PlaylistDetail>>(playlistsDomain);
             return new PagedCollection<PlaylistDetail>(playlists, playlistsDomain.ItemCount, playlistsDomain.CurrentPageNumber, playlistsDomain.PageSize);
