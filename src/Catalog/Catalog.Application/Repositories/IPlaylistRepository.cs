@@ -10,6 +10,7 @@ namespace Catalog.Application.Repositories
     {
 
         Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize);
+        Task<Playlist> GetPlaylist(int playlistId);
 
     }
 }

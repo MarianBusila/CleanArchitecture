@@ -26,11 +26,23 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpGet(Name = nameof(GetPlaylists))]
-        [ProducesResponseType(typeof(IEnumerable<PlaylistDetail>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IPagedCollection<PlaylistDetail>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPlaylists([FromQuery] PlaylistQuery playlistQuery)
         {
             IPagedCollection<PlaylistDetail> playlists = await _mediator.Send(new GetPlaylistListQuery(playlistQuery));
             return this.OkWithPageHeader(playlists, nameof(GetPlaylists), playlistQuery, _urlHelper);
+        }
+
+        [HttpGet("playlistId:int", Name = nameof(GetPlaylistById))]
+        [ProducesResponseType(typeof(PlaylistDetail), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetPlaylistById(int playlistId)
+        {
+            PlaylistDetail playlist = await _mediator.Send(new GetPlaylistQuery(playlistId));
+            if (playlist == null)
+                return NotFound();
+
+            return Ok(playlist);
         }
     }
 }

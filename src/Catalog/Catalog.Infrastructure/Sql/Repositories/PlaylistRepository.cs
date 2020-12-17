@@ -33,5 +33,13 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 .ToPagedCollectionAsync(pageNumber, pageSize);
         }
 
+        public async Task<Playlist> GetPlaylist(int playlistId)
+        {
+            return await _playlistDbContext
+                .Playlists
+                .Where(playlist => playlist.Id == playlistId)
+                .Include(e => e.PlaylistTracks)
+                .FirstOrDefaultAsync();
+        }
     }
 }
