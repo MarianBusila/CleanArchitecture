@@ -15,14 +15,14 @@ namespace Catalog.Infrastructure.DependencyInjection
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string may not be null, empty, or whitespace", nameof(connectionString));
 
-            return services.AddDbContextPool<PlaylistDbContext>(options => 
+            return services.AddDbContextPool<CatalogDbContext>(options => 
             { 
                 options.UseNpgsql(connectionString);
                 options.EnableDetailedErrors(isDevelopment);
                 options.EnableSensitiveDataLogging(isDevelopment);
             })
                 .AddScoped<IPlaylistFilter, LinqPlaylistFilter>()
-                .AddScoped<IPlaylistRepository, PlaylistRepository>();
+                .AddScoped<ICatalogRepository, CatalogRepository>();
         }
     }
 }

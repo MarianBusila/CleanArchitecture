@@ -11,12 +11,12 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
 {
     public sealed class GetPlaylistQueryHandler : IRequestHandler<GetPlaylistQuery, PlaylistDetail>
     {
-        private readonly IPlaylistRepository _playlistRepository;
+        private readonly ICatalogRepository _catalogRepository;
         private readonly IMapper _mapper;
 
-        public GetPlaylistQueryHandler(IPlaylistRepository playlistRepository, IMapper mapper)
+        public GetPlaylistQueryHandler(ICatalogRepository catalogRepository, IMapper mapper)
         {
-            _playlistRepository = playlistRepository ?? throw new ArgumentNullException(nameof(playlistRepository));
+            _catalogRepository = catalogRepository ?? throw new ArgumentNullException(nameof(catalogRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -27,7 +27,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 throw new ArgumentNullException(nameof(request));
 
 
-            Playlist playlistDomain = await _playlistRepository.GetPlaylist(request.PlaylistId, cancellationToken);
+            Playlist playlistDomain = await _catalogRepository.GetPlaylist(request.PlaylistId, cancellationToken);
             return playlistDomain == null ? null : _mapper.Map<PlaylistDetail>(playlistDomain);
         }
 

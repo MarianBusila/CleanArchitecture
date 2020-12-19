@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Repositories
 {
-    public class PlaylistDbContext : DbContext
+    public class CatalogDbContext : DbContext
     {
 
         public DbSet<Playlist> Playlists { get; set; } = null;
         public DbSet<PlaylistTrack> PlaylistTracks { get; set; } = null;
         public DbSet<Track> Tracks { get; set; } = null;
 
-        public PlaylistDbContext(DbContextOptions<PlaylistDbContext> options) : base(options)
+        public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options)
         {
             
         }
@@ -22,7 +22,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 throw  new ArgumentNullException(nameof(modelBuilder));
 
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PlaylistDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);
         }
 
     }

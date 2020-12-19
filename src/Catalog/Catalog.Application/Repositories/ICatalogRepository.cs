@@ -7,7 +7,7 @@ using Catalog.Domain.Models;
 
 namespace Catalog.Application.Repositories
 {
-    public interface IPlaylistRepository
+    public interface ICatalogRepository
     {
 
         Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken);

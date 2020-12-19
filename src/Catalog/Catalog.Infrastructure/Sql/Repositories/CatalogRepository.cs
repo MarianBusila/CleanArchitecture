@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Repositories
 {
-    public class PlaylistRepository : IPlaylistRepository
+    public class CatalogRepository : ICatalogRepository
     {
 
-        private readonly PlaylistDbContext _playlistDbContext;
+        private readonly CatalogDbContext _catalogDbContext;
 
-        public PlaylistRepository(PlaylistDbContext playlistDbContext)
+        public CatalogRepository(CatalogDbContext catalogDbContext)
         {
-            _playlistDbContext = playlistDbContext ?? throw new ArgumentNullException(nameof(playlistDbContext));
+            _catalogDbContext = catalogDbContext ?? throw new ArgumentNullException(nameof(catalogDbContext));
         }
 
         public async Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken)
@@ -27,7 +27,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
             if (linqPlaylistFilter is null)
                 throw new ArgumentException("Sql playlist repository expects a linq filter");
 
-            return await _playlistDbContext
+            return await _catalogDbContext
                 .Playlists
                 .TagWithQueryName(nameof(GetPlaylists))
                 .Where(linqPlaylistFilter.Filter)
@@ -37,7 +37,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
         public async Task<Playlist> GetPlaylist(int playlistId, CancellationToken cancellationToken)
         {
-            return await _playlistDbContext
+            return await _catalogDbContext
                 .Playlists
                 .TagWithQueryName(nameof(GetPlaylist))
                 .Where(playlist => playlist.Id == playlistId)
@@ -50,8 +50,8 @@ namespace Catalog.Infrastructure.Sql.Repositories
             List<int> normalizedTrackIds = await NormalizeTrackIds(trackIds, cancellationToken);
 
             normalizedTrackIds.ForEach(trackId => playlist.PlaylistTracks.Add(new PlaylistTrack {TrackId = trackId}));
-            _playlistDbContext.Playlists.Add(playlist);
-            var entriesSaved = await _playlistDbContext.SaveChangesAsync(cancellationToken);
+            _catalogDbContext.Playlists.Add(playlist);
+            var entriesSaved = await _catalogDbContext.SaveChangesAsync(cancellationToken);
             var expectedEntriesSaved = trackIds.Count + 1;
             if (entriesSaved != expectedEntriesSaved)
                 throw new DbUpdateException($"While adding a new playlist, received '{entriesSaved}' saved entries, but expected '{expectedEntriesSaved}'");
@@ -62,7 +62,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
         {
             List<int> normalizedTrackIds = await NormalizeTrackIds(trackIds, cancellationToken);
 
-            List<PlaylistTrack> currentPlaylistTracks = await _playlistDbContext
+            List<PlaylistTrack> currentPlaylistTracks = await _catalogDbContext
                 .PlaylistTracks
                 .Where(pt => pt.PlaylistId == playlist.Id)
                 .ToListAsync(cancellationToken);
@@ -73,10 +73,10 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 TrackId = trackId
             });
 
-            _playlistDbContext.PlaylistTracks.RemoveRange(currentPlaylistTracks);
-            _playlistDbContext.PlaylistTracks.AddRange(newPlaylistTracks);
+            _catalogDbContext.PlaylistTracks.RemoveRange(currentPlaylistTracks);
+            _catalogDbContext.PlaylistTracks.AddRange(newPlaylistTracks);
 
-            await _playlistDbContext.SaveChangesAsync(cancellationToken);
+            await _catalogDbContext.SaveChangesAsync(cancellationToken);
         }
 
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
@@ -89,7 +89,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
             if (trackIds != null && trackIds.Any())
             {
-                var trackIdsFromDb = await _playlistDbContext
+                var trackIdsFromDb = await _catalogDbContext
                     .Tracks
                     .Where(track => trackIds.Contains(track.Id))
                     .Select(track => track.Id)

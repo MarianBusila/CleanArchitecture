@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,12 +11,12 @@ namespace Catalog.Application.Playlists.Commands.CreatePlaylist
 {
     public sealed class CreatePlaylistCommandHandler : IRequestHandler<CreatePlaylistCommand, PlaylistFromCreate>
     {
-        private readonly IPlaylistRepository _playlistRepository;
+        private readonly ICatalogRepository _catalogRepository;
         private readonly IMapper _mapper;
 
-        public CreatePlaylistCommandHandler(IPlaylistRepository playlistRepository, IMapper mapper)
+        public CreatePlaylistCommandHandler(ICatalogRepository catalogRepository, IMapper mapper)
         {
-            _playlistRepository = playlistRepository ?? throw new ArgumentNullException(nameof(playlistRepository));
+            _catalogRepository = catalogRepository ?? throw new ArgumentNullException(nameof(catalogRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -27,7 +26,7 @@ namespace Catalog.Application.Playlists.Commands.CreatePlaylist
                 throw new ArgumentNullException(nameof(request));
 
             var playlist = _mapper.Map<Playlist>(request);
-            await _playlistRepository.CreatePlaylist(playlist, request.TrackIds, cancellationToken);
+            await _catalogRepository.CreatePlaylist(playlist, request.TrackIds, cancellationToken);
             return _mapper.Map<PlaylistFromCreate>(playlist);
         }
 

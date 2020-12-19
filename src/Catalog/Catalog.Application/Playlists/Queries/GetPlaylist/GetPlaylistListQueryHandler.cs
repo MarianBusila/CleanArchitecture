@@ -14,13 +14,13 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
     public sealed class GetPlaylistListQueryHandler : IRequestHandler<GetPlaylistListQuery, IPagedCollection<PlaylistDetail>>
     {
 
-        private readonly IPlaylistRepository _playlistRepository;
+        private readonly ICatalogRepository _catalogRepository;
         private readonly IPlaylistFilter _playlistFilter;
         private readonly IMapper _mapper;
 
-        public GetPlaylistListQueryHandler(IPlaylistRepository playlistRepository, IPlaylistFilter playlistFilter, IMapper mapper)
+        public GetPlaylistListQueryHandler(ICatalogRepository catalogRepository, IPlaylistFilter playlistFilter, IMapper mapper)
         {
-            _playlistRepository = playlistRepository ?? throw new ArgumentNullException(nameof(playlistRepository));
+            _catalogRepository = catalogRepository ?? throw new ArgumentNullException(nameof(catalogRepository));
             _playlistFilter = playlistFilter ?? throw new ArgumentNullException(nameof(playlistFilter));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -34,7 +34,7 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 .WhereTrackIdEquals(request.TrackId)
                 .WhereNameLike(request.Name);
 
-            IPagedCollection<Playlist> playlistsDomain = await _playlistRepository.GetPlaylists(filter, request.PageNumber, request.PageSize, cancellationToken);
+            IPagedCollection<Playlist> playlistsDomain = await _catalogRepository.GetPlaylists(filter, request.PageNumber, request.PageSize, cancellationToken);
 
             var playlists = _mapper.Map<IReadOnlyList<PlaylistDetail>>(playlistsDomain);
             return new PagedCollection<PlaylistDetail>(playlists, playlistsDomain.ItemCount, playlistsDomain.CurrentPageNumber, playlistsDomain.PageSize);
