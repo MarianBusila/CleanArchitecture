@@ -58,6 +58,27 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
         }
 
+        public async Task UpdatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
+        {
+            List<int> normalizedTrackIds = await NormalizeTrackIds(trackIds, cancellationToken);
+
+            List<PlaylistTrack> currentPlaylistTracks = await _playlistDbContext
+                .PlaylistTracks
+                .Where(pt => pt.PlaylistId == playlist.Id)
+                .ToListAsync(cancellationToken);
+
+            IEnumerable<PlaylistTrack> newPlaylistTracks = normalizedTrackIds.Select(trackId => new PlaylistTrack
+            {
+                PlaylistId = playlist.Id,
+                TrackId = trackId
+            });
+
+            _playlistDbContext.PlaylistTracks.RemoveRange(currentPlaylistTracks);
+            _playlistDbContext.PlaylistTracks.AddRange(newPlaylistTracks);
+
+            await _playlistDbContext.SaveChangesAsync(cancellationToken);
+        }
+
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
         {
             var normalizedTrackIds = trackIds

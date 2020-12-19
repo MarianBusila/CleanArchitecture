@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Commands.CreatePlaylist;
 using Catalog.Application.Playlists.Commands.CreatePlaylist.Models;
+using Catalog.Application.Playlists.Commands.UpdatePlaylist;
+using Catalog.Application.Playlists.Commands.UpdatePlaylist.Models;
 using Catalog.Application.Playlists.Queries.GetPlaylist;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Models;
 using MediatR;
@@ -36,7 +38,7 @@ namespace Catalog.Api.Controllers
             return this.OkWithPageHeader(playlists, nameof(GetPlaylists), playlistQuery, _urlHelper);
         }
 
-        [HttpGet("playlistId:int", Name = nameof(GetPlaylistById))]
+        [HttpGet("{playlistId:int}", Name = nameof(GetPlaylistById))]
         [ProducesResponseType(typeof(PlaylistDetail), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -56,6 +58,16 @@ namespace Catalog.Api.Controllers
         {
             var playlistFromCreate = await _mediator.Send(new CreatePlaylistCommand(playlist));
             return CreatedAtAction(nameof(GetPlaylistById), new { playlistId = playlistFromCreate.Id }, playlistFromCreate);
+        }
+
+        [HttpPut("{playlistId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdatePlaylist(int playlistId, [FromBody]PlaylistForUpdate playlist)
+        {
+            await _mediator.Send(new UpdatePlaylistCommand(playlistId, playlist));
+            return Ok();
         }
     }
 }

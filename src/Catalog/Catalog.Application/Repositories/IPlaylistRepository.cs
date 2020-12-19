@@ -15,5 +15,7 @@ namespace Catalog.Application.Repositories
 
         Task CreatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
 
+        Task UpdatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
+
     }
 }
