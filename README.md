@@ -50,3 +50,12 @@ dotnet run
 - IUrlHelper is used to generate links inside the application
 - the APIs allow for filtering which is passed along to the repository
 - Pagination is returned using X-Pagination header
+- [Exception handling](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling) is done with UseExceptionHandler middleware which is recommended over exception filters
+- ProblemDetails is used to return more details in HTTP response in case of problems (https://tools.ietf.org/html/rfc7807)
+
+## TODOs
+
+- Exception handling middleware
+- HealthChecks
+- Integration tests with TestHost
+- CosmosDb persistence
