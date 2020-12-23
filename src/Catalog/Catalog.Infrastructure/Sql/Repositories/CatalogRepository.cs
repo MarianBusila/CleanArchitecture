@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
@@ -77,6 +78,26 @@ namespace Catalog.Infrastructure.Sql.Repositories
             _catalogDbContext.PlaylistTracks.AddRange(newPlaylistTracks);
 
             await _catalogDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeletePlaylist(Playlist playlist, CancellationToken cancellationToken)
+        {
+            var playlistTracks = await _catalogDbContext
+                .PlaylistTracks
+                .Where(pt => pt.PlaylistId == playlist.Id)
+                .ToListAsync(cancellationToken);
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                _catalogDbContext.PlaylistTracks.RemoveRange(playlistTracks);
+                _catalogDbContext.Playlists.Remove(playlist);
+
+                var entries = await _catalogDbContext.SaveChangesAsync(cancellationToken);
+                if(entries != playlistTracks.Count + 1)
+                    throw new DbUpdateException($"Something went wrong while attempting to remove playlist having id '{playlist.Id}'");
+
+                scope.Complete();
+            }
         }
 
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)

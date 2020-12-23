@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Commands.CreatePlaylist;
 using Catalog.Application.Playlists.Commands.CreatePlaylist.Models;
+using Catalog.Application.Playlists.Commands.DeletePlaylist;
 using Catalog.Application.Playlists.Commands.UpdatePlaylist;
 using Catalog.Application.Playlists.Commands.UpdatePlaylist.Models;
 using Catalog.Application.Playlists.Queries.GetPlaylist;
@@ -68,6 +69,16 @@ namespace Catalog.Api.Controllers
         {
             await _mediator.Send(new UpdatePlaylistCommand(playlistId, playlist));
             return Ok();
+        }
+
+        [HttpDelete("{playlistId:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeletePlaylist(int playlistId)
+        {
+            await _mediator.Send(new DeletePlaylistCommand(playlistId));
+            return NoContent();
         }
     }
 }

@@ -11,11 +11,14 @@ namespace Catalog.Application.Repositories
     {
 
         Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken);
+
         Task<Playlist> GetPlaylist(int playlistId, CancellationToken cancellationToken);
 
         Task CreatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
 
         Task UpdatePlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
+
+        Task DeletePlaylist(Playlist playlist, CancellationToken cancellationToken);
 
     }
 }

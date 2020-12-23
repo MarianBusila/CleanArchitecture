@@ -55,7 +55,6 @@ dotnet run
 
 ## TODOs
 
-- Exception handling middleware
 - HealthChecks
 - Integration tests with TestHost
 - CosmosDb persistence
