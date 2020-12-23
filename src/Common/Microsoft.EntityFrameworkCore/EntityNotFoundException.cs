@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Microsoft.EntityFrameworkCore
+namespace Microsoft.EntityFrameworkCore
 {
     public class EntityNotFoundException : Exception
     {

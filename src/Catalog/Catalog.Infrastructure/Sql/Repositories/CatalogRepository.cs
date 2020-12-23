@@ -8,7 +8,6 @@ using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
 using Catalog.Infrastructure.Sql.Filters;
-using Common.Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Repositories

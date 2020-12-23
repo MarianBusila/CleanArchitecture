@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Catalog.Application.Playlists.Commands.UpdatePlaylist;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
-using Common.Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MediatR;
 
 namespace Catalog.Application.Playlists.Commands.DeletePlaylist
