@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Mvc
         [FromQuery(Name = "limit")]
         public int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
 
-        public PagedQueryParams() : base()
+        public PagedQueryParams()
         {
         }
 
