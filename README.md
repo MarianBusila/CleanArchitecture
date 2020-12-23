@@ -46,6 +46,7 @@ dotnet run
 
 ## Notes
 
+- use Swagger embedded in Microsoft packages and not a third party library
 - [MediatR](https://github.com/jbogard/MediatR) is used to implement CQRS
 - IUrlHelper is used to generate links inside the application
 - the APIs allow for filtering which is passed along to the repository
