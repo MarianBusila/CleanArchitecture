@@ -18,12 +18,10 @@ namespace Catalog.Api.Controllers
     {
 
         private readonly IMediator _mediator;
-        private readonly IUrlHelper _urlHelper;
 
-        public PlaylistTracksController(IMediator mediator, IUrlHelper urlHelper)
+        public PlaylistTracksController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
         }
 
         /// <summary>
