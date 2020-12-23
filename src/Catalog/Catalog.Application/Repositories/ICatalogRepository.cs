@@ -20,5 +20,7 @@ namespace Catalog.Application.Repositories
 
         Task DeletePlaylist(Playlist playlist, CancellationToken cancellationToken);
 
+        Task AddTracksToPlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
+
     }
 }

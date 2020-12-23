@@ -100,6 +100,32 @@ namespace Catalog.Infrastructure.Sql.Repositories
             }
         }
 
+        public async Task AddTracksToPlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
+        {
+            var newTrackIds = trackIds
+                .Distinct()
+                .OrderBy(trackId => trackId)
+                .ToList();
+
+            var existingTrackIds = await _catalogDbContext
+                .PlaylistTracks
+                .AsNoTracking()
+                .Where(pt => pt.PlaylistId == playlist.Id && newTrackIds.Contains(pt.TrackId))
+                .Select(pt => pt.TrackId)
+                .ToListAsync(cancellationToken);
+
+            var tracksForAdd = newTrackIds
+                .Except(existingTrackIds)
+                .Select(trackId => new PlaylistTrack { PlaylistId = playlist.Id, TrackId = trackId })
+                .ToList();
+
+            if(tracksForAdd.Any())
+            {
+                await _catalogDbContext.PlaylistTracks.AddRangeAsync(tracksForAdd, cancellationToken);
+                await _catalogDbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
+
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
         {
             var normalizedTrackIds = trackIds
