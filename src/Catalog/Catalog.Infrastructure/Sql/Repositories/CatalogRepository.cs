@@ -8,6 +8,7 @@ using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Repositories;
 using Catalog.Domain.Models;
 using Catalog.Infrastructure.Sql.Filters;
+using Common.Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Sql.Repositories
@@ -124,6 +125,39 @@ namespace Catalog.Infrastructure.Sql.Repositories
                 await _catalogDbContext.PlaylistTracks.AddRangeAsync(tracksForAdd, cancellationToken);
                 await _catalogDbContext.SaveChangesAsync(cancellationToken);
             }
+        }
+
+        public async Task DeleteTracksFromPlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
+        {
+            var uniqueTrackIds = trackIds
+                .Distinct()
+                .OrderBy(trackId => trackId)
+                .ToList();
+
+            if(uniqueTrackIds.Any())
+            {
+                var playlistTrackIdsFromDb = await _catalogDbContext
+                    .PlaylistTracks
+                    .AsNoTracking()
+                    .Where(p => p.PlaylistId == playlist.Id && uniqueTrackIds.Contains(p.TrackId))
+                    .Select(p => p.TrackId)
+                    .OrderBy(trackId => trackId)
+                    .ToListAsync(cancellationToken);
+
+                if (!playlistTrackIdsFromDb.SequenceEqual(uniqueTrackIds))
+                {
+                    var missingTrackIds = string.Join(",", uniqueTrackIds.Except(playlistTrackIdsFromDb));
+                    throw new EntityNotFoundException($"Tracks having ids '{missingTrackIds}' do not exist");
+                }
+
+                var playlistTracksFromDb = await _catalogDbContext
+                    .PlaylistTracks
+                    .Where(p => p.PlaylistId == playlist.Id && uniqueTrackIds.Contains(p.TrackId))
+                    .ToListAsync(cancellationToken);
+                _catalogDbContext.PlaylistTracks.RemoveRange(playlistTracksFromDb);
+                await _catalogDbContext.SaveChangesAsync(cancellationToken);
+            }
+
         }
 
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
