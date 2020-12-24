@@ -56,6 +56,8 @@ dotnet run
 
 ## TODOs
 
+- fluent validation of requests
+- autogenerate client
 - HealthChecks
 - Integration tests with TestHost
 - CosmosDb persistence
