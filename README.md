@@ -51,6 +51,19 @@ dotnet run
 - IUrlHelper is used to generate links inside the application
 - the APIs allow for filtering which is passed along to the repository
 - Pagination is returned using X-Pagination header
+```json
+{
+    "CurrentPageNumber":2,
+    "ItemCount":3503,
+    "PageSize":10,
+    "PageCount":351,
+    "FirstPageUrl":"http://localhost:5000/v1/tracks?page=1&limit=10",
+    "LastPageUrl":"http://localhost:5000/v1/tracks?page=351&limit=10",
+    "NextPageUrl":"http://localhost:5000/v1/tracks?page=3&limit=10",
+    "PreviousPageUrl":"http://localhost:5000/v1/tracks?page=1&limit=10",
+    "CurrentPageUrl":"http://localhost:5000/v1/tracks?page=2&limit=10"
+    }
+```
 - [Exception handling](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling) is done with UseExceptionHandler middleware which is recommended over exception filters
 - ProblemDetails is used to return more details in HTTP response in case of problems (https://tools.ietf.org/html/rfc7807)
 

@@ -22,6 +22,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
             _catalogDbContext = catalogDbContext ?? throw new ArgumentNullException(nameof(catalogDbContext));
         }
 
+        #region Playlists
         public async Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var linqPlaylistFilter = filter as LinqPlaylistFilter;
@@ -158,6 +159,24 @@ namespace Catalog.Infrastructure.Sql.Repositories
             }
 
         }
+
+        #endregion
+
+        #region Tracks
+
+        public async Task<IPagedCollection<Track>> GetTracks(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            return await _catalogDbContext
+                .Tracks
+                .TagWithQueryName(nameof(GetTracks))
+                .AsNoTracking()
+                .Include(track => track.Genre)
+                .Include(track => track.Album!.Artist)
+                .Include(track => track.MediaType)
+                .ToPagedCollectionAsync(pageNumber, pageSize, cancellationToken);
+        }
+
+        #endregion
 
         private async Task<List<int>> NormalizeTrackIds(IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken)
         {

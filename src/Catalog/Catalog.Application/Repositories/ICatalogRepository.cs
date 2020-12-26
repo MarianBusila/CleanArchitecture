@@ -10,6 +10,8 @@ namespace Catalog.Application.Repositories
     public interface ICatalogRepository
     {
 
+        #region Playlists
+        
         Task<IPagedCollection<Playlist>> GetPlaylists(IPlaylistFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken);
 
         Task<Playlist> GetPlaylist(int playlistId, CancellationToken cancellationToken);
@@ -23,6 +25,15 @@ namespace Catalog.Application.Repositories
         Task AddTracksToPlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
 
         Task DeleteTracksFromPlaylist(Playlist playlist, IReadOnlyCollection<int> trackIds, CancellationToken cancellationToken);
+
+        #endregion
+
+
+        #region Tracks
+
+        Task<IPagedCollection<Track>> GetTracks(int pageNumber, int pageSize, CancellationToken cancellationToken);
+
+        #endregion
 
     }
 }
