@@ -18,8 +18,8 @@ namespace Catalog.Application.Tracks.Queries.GetTrack
         public string Album { get; }
         public string Artist { get; }
         public string MediaType { get; }
-        public PriceFilter PriceFrom { get; }
-        public PriceFilter PriceTo { get; }
+        public string PriceFrom { get; }
+        public string PriceTo { get; }
 
         public GetTrackListQuery(TrackQuery trackQuery)
         {
@@ -34,8 +34,8 @@ namespace Catalog.Application.Tracks.Queries.GetTrack
             Name = trackQuery.Name;
             PageNumber = trackQuery.PageNumber;
             PageSize = trackQuery.PageSize;
-            PriceFrom = trackQuery.PriceFrom == null ? null : new PriceFilter(trackQuery.PriceFrom);
-            PriceTo = trackQuery.PriceTo == null ? null : new PriceFilter(trackQuery.PriceTo);
+            PriceFrom = trackQuery.PriceFrom;
+            PriceTo = trackQuery.PriceTo;
 
         }
 

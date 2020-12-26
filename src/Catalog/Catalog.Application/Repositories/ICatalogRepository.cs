@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
+using Catalog.Application.Tracks.Queries.GetTrack.Filters;
 using Catalog.Domain.Models;
 
 namespace Catalog.Application.Repositories
@@ -31,7 +32,7 @@ namespace Catalog.Application.Repositories
 
         #region Tracks
 
-        Task<IPagedCollection<Track>> GetTracks(int pageNumber, int pageSize, CancellationToken cancellationToken);
+        Task<IPagedCollection<Track>> GetTracks(ITrackFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken);
 
         #endregion
 

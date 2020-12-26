@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Catalog.Application.Playlists.Queries.GetPlaylist.Filters;
 using Catalog.Application.Repositories;
+using Catalog.Application.Tracks.Queries.GetTrack.Filters;
 using Catalog.Domain.Models;
 using Catalog.Infrastructure.Sql.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ namespace Catalog.Infrastructure.Sql.Repositories
         {
             var linqPlaylistFilter = filter as LinqPlaylistFilter;
             if (linqPlaylistFilter is null)
-                throw new ArgumentException("Sql playlist repository expects a linq filter");
+                throw new ArgumentException("Sql catalog repository expects a linq playlist filter");
 
             return await _catalogDbContext
                 .Playlists
@@ -164,12 +165,17 @@ namespace Catalog.Infrastructure.Sql.Repositories
 
         #region Tracks
 
-        public async Task<IPagedCollection<Track>> GetTracks(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        public async Task<IPagedCollection<Track>> GetTracks(ITrackFilter filter, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
+            var linqTrackFilter = filter as LinqTrackFilter;
+            if (linqTrackFilter is null)
+                throw new ArgumentException("Sql catalog repository expects a linq track filter");
+
             return await _catalogDbContext
                 .Tracks
                 .TagWithQueryName(nameof(GetTracks))
                 .AsNoTracking()
+                .Where(linqTrackFilter.Filter)
                 .Include(track => track.Genre)
                 .Include(track => track.Album!.Artist)
                 .Include(track => track.MediaType)
