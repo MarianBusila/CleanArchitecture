@@ -3,11 +3,14 @@ using Catalog.Api.DependencyInjection;
 using Catalog.Application.DependencyInjection;
 using Catalog.Infrastructure.DependencyInjection;
 using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -35,6 +38,8 @@ namespace Catalog.Api
             services
                 .AddControllers()
                 .AddFluentValidation();
+            services.AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy());
             services.ConfigureSwagger();
             services.AddLogging(builder => 
             { 
@@ -58,6 +63,17 @@ namespace Catalog.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions
+                    {
+                        Predicate = _ => true,
+                        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    }
+                    );
+                endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+                    {
+                        Predicate = r => r.Name.Contains("self")
+                    }
+                    );
             });
         }
     }

@@ -16,6 +16,9 @@ namespace Catalog.Infrastructure.DependencyInjection
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string may not be null, empty, or whitespace", nameof(connectionString));
 
+            services.AddHealthChecks()
+                .AddDbContextCheck<CatalogDbContext>("Sql Database");
+
             return services.AddDbContextPool<CatalogDbContext>(options => 
             { 
                 options.UseNpgsql(connectionString);

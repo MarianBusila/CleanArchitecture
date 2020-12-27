@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Infrastructure", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Client", "Catalog\Catalog.Client\Catalog.Client.csproj", "{CE3DA0A9-C574-4264-9018-F3C2DD0AD28A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchDog", "WatchDog\WatchDog.csproj", "{E5CB6528-7E0B-4D1C-9FBA-002DAE462521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{CE3DA0A9-C574-4264-9018-F3C2DD0AD28A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE3DA0A9-C574-4264-9018-F3C2DD0AD28A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE3DA0A9-C574-4264-9018-F3C2DD0AD28A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CB6528-7E0B-4D1C-9FBA-002DAE462521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CB6528-7E0B-4D1C-9FBA-002DAE462521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CB6528-7E0B-4D1C-9FBA-002DAE462521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CB6528-7E0B-4D1C-9FBA-002DAE462521}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
