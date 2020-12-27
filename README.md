@@ -98,13 +98,19 @@ dotnet run
     }
     ```
 
+- [NSwag](https://github.com/RicoSuter/NSwag) is used to autogenerate the C# client library based on the details explained [here](https://blog.sanderaernouts.com/autogenerate-csharp-api-client-with-nswag). 
+A client is generated for each controller from the Api project. 
+In order to use the client from any other project, you need to add the [dependency injection in HTTP Client Factory](https://itnext.io/use-http-client-factory-with-nswag-generated-classes-in-asp-net-core-3-c1dd66ee004c) for it and then inject it in the classes where needed.
+```cs
+services.AddHttpClient<ITracksClient, TracksClient>(client => 
+    client.BaseAddress = new Uri("https://localhost:5000"));
+```
 
 ## TODOs
 
 - implement a selector capability
 - add documentation about the repository and unit of work
-- investigate if Scrutor can be used to achive something similar to [this article]()
-- autogenerate client
+- investigate if [Scrutor](https://github.com/khellang/Scrutor) can be used to achive something similar to StructureMap scan.Assembly("InfraStructure") [this article]() to remove the project reference from Api to Infrastructure project
 - HealthChecks
 - Integration tests with TestHost
 - CosmosDb persistence
