@@ -2,7 +2,8 @@
 
 ## Overview
 
-A clean architecture implementation based on this project https://github.com/drminnaar/chinook.
+A clean architecture implementation based on different sources like [drminnaar](https://github.com/drminnaar/chinook), [alexcodetuts](https://alexcodetuts.com/2020/02/05/asp-net-core-3-1-clean-architecture-invoice-management-app-part-1/) and [eShopOnContainers](https://github.com/dotnet-architecture/eShopOnContainers), [jasontaylor](https://jasontaylor.dev/clean-architecture-getting-started/)
+![CleanArchitecture](docs/images/CleanArchitecture.png)
 
 ## Getting started
 
@@ -47,7 +48,7 @@ dotnet run
 ## Notes
 
 - use Swagger embedded in Microsoft packages and not a third party library
-- [MediatR](https://github.com/jbogard/MediatR) is used to implement CQRS
+- [MediatR](https://github.com/jbogard/MediatR) is used to implement CQRS. A good explenation of the Mediator pattern can be found [here](https://refactoring.guru/design-patterns/mediator)
 - IUrlHelper is used to generate links inside the application
 - the APIs allow for filtering which is passed along to the repository
 - Pagination is returned using X-Pagination header
@@ -65,11 +66,44 @@ dotnet run
     }
 ```
 - [Exception handling](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling) is done with UseExceptionHandler middleware which is recommended over exception filters
-- ProblemDetails is used to return more details in HTTP response in case of problems (https://tools.ietf.org/html/rfc7807)
+- ProblemDetails and ValidationProblemDetails is used to return more details in HTTP response in case of problems and complies with [RFC 7807](https://tools.ietf.org/html/rfc7807)
+- the validation of requests can be done in several ways:
+    - with data annotations
+    ```cs
+        [Required(ErrorMessage = "Price is required")]
+        [Range(0, 5, ErrorMessage = "Price should be set at 0-5 dollars")]
+        public decimal Price { get; set; }
+    ```
+
+    - using MediatR pipeline behaviour as described [here](https://timdows.com/projects/use-mediatr-with-fluentvalidation-in-the-asp-net-core-pipeline/) or using a nuget package like [MediatR.Extensions.FluentValidation.AspNetCore](https://github.com/GetoXs/MediatR.Extensions.FluentValidation.AspNetCore). EShopOnContainers uses this approach. The validators are defined on Commands  or Query objects in Application layer and a Domain exception is thrown which gets handled with an IExceptionFilter and a BadRequest response is produced
+
+    - using [Fluent Validation with AspNetCore](https://docs.fluentvalidation.net/en/latest/aspnet.html). This approach is more generic since it does not require MediatR and this is the one used in this repo. Validation is done in the Application layer on the models bound by asp net core. When validation fails, a BadRequest response is sent using a ValidationProblemDetails model.
+    ```json
+    {
+        "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "traceId": "|d23b405c-4cc972fec0cf47c2.",
+        "errors": {
+            "name": [
+            "'Name' must be between 0 and 10 characters. You entered 11 characters."
+            ],
+            "PriceTo": [
+            "Value must be in the form of 'gt:10.5', gte:10.5, lt:10.5, lte:10.5, eq:10.5"
+            ],
+            "PriceFrom": [
+            "Value must be in the form of 'gt:10.5', gte:10.5, lt:10.5, lte:10.5, eq:10.5"
+            ]
+        }
+    }
+    ```
+
 
 ## TODOs
 
-- fluent validation of requests
+- implement a selector capability
+- add documentation about the repository and unit of work
+- investigate if Scrutor can be used to achive something similar to [this article]()
 - autogenerate client
 - HealthChecks
 - Integration tests with TestHost

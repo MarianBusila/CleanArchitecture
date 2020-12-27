@@ -2,6 +2,7 @@ using System;
 using Catalog.Api.DependencyInjection;
 using Catalog.Application.DependencyInjection;
 using Catalog.Infrastructure.DependencyInjection;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,9 @@ namespace Catalog.Api
             services.ConfigureSql(_configuration.GetConnectionString("chinook"), _environment.IsDevelopment());
             services.ConfigureApplication();
             services.ConfigureUrlHelper();
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddFluentValidation();
             services.ConfigureSwagger();
             services.AddLogging(builder => 
             { 

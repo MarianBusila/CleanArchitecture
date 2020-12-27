@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Application.Tracks.Queries.GetTrack.Models
 {
@@ -46,14 +45,12 @@ namespace Catalog.Application.Tracks.Queries.GetTrack.Models
         /// Specify the minimum price to search by
         /// </summary>
         [FromQuery(Name = "price-from")]
-        [RegularExpression(@"^(gt|gte|lt|lte|eq):[1-9]{1}\d*\.?\d*$", ErrorMessage = "Invalid 'price-from' specified. Value be in the form of 'gt:10.5', gte:10.5, lt:10.5, lte:10.5, eq:10.5")]
         public string PriceFrom { get; set; }
 
         /// <summary>
         /// Specify the maximum price to search by
         /// </summary>
         [FromQuery(Name = "price-to")]
-        [RegularExpression(@"^(gt|gte|lt|lte|eq):[1-9]{1}\d*\.?\d*$", ErrorMessage = "Invalid 'price-to' specified. Value be in the form of 'gt:10.5', gte:10.5, lt:10.5, lte:10.5, eq:10.5")]
         public string PriceTo { get; set; }
 
         public TrackQuery() : base()

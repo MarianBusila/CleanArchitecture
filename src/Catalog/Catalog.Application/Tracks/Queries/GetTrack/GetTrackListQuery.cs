@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Catalog.Application.Tracks.Queries.GetTrack.Filters;
 using Catalog.Application.Tracks.Queries.GetTrack.Models;
 using MediatR;
 

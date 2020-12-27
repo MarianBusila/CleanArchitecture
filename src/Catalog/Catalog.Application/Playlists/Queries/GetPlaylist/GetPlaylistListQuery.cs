@@ -7,7 +7,6 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
     public sealed class GetPlaylistListQuery : IRequest<IPagedCollection<PlaylistDetail>>
     {
         public string Name { get; }
-        public string Order { get; }
         public int PageNumber { get; }
         public int PageSize { get; }
         public int? TrackId { get; }
@@ -18,7 +17,6 @@ namespace Catalog.Application.Playlists.Queries.GetPlaylist
                 throw new System.ArgumentNullException(nameof(playlistQuery));
 
             Name = playlistQuery.Name;
-            Order = playlistQuery.Order;
             PageNumber = playlistQuery.PageNumber;
             PageSize = playlistQuery.PageSize;
 

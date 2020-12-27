@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +12,9 @@ namespace Catalog.Application.DependencyInjection
         {
             return services
                 .AddAutoMapper(Assembly.GetExecutingAssembly())
-                .AddMediatR(Assembly.GetExecutingAssembly());
+                .AddMediatR(Assembly.GetExecutingAssembly())
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
         }
     }
 }
