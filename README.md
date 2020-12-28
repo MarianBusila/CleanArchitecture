@@ -124,10 +124,11 @@ A [Watchdog](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/
 ![Watchdog](docs/images/HealthCheck-Watchdog.png)
 
 
+- [Integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests) are implemented using **WebApplicationFactory** and test the entire stack using an in memory database. 
+Some good references can be found [here](https://andrewlock.net/converting-integration-tests-to-net-core-3/) and [here](https://adamstorr.azurewebsites.net/blog/integration-testing-with-aspnetcore-3-1-swapping-dependency-with-moq)
 ## TODOs
 
 - implement a selector capability
 - add documentation about the repository and unit of work
 - investigate if [Scrutor](https://github.com/khellang/Scrutor) can be used to achive something similar to StructureMap scan.Assembly("InfraStructure") [this article]() to remove the project reference from Api to Infrastructure project
-- Integration tests with TestHost
 - CosmosDb persistence
