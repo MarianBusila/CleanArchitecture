@@ -40,6 +40,7 @@ namespace Catalog.Api
                 .AddFluentValidation();
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
+            services.AddMetrics();
             services.ConfigureSwagger();
             services.AddLogging(builder => 
             { 

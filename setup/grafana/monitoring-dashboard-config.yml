@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+- name: 'Prometheus'
+  orgId: 1
+  folder: 'app-metrics-web-monitoring-prometheus_rev3.json'
+  type: file
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards

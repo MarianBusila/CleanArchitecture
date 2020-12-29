@@ -1,5 +1,6 @@
 version: '3.5'
 services:
+
   pg-chinook:
     container_name: pg-chinook
     image: postgres:11
@@ -15,6 +16,7 @@ services:
     networks:
       chinooknet:
         ipv4_address: 172.22.0.5
+
   pg-admin:
     container_name: pg-admin
     image: dpage/pgadmin4
@@ -26,9 +28,56 @@ services:
       - "8080:80"
     networks:
       - chinooknet
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - prometheus-config:/etc/prometheus
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      # for storage options, see
+      # https://prometheus.io/docs/prometheus/latest/storage/
+      - '--storage.tsdb.retention.time=24h'
+      # - '--storage.tsdb.retention.size=512M'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - chinooknet
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - grafana-provisioning:/etc/grafana/provisioning/
+    networks:
+      - chinooknet
+    depends_on:
+      - prometheus
+
 volumes:
   pg-chinook-data:
     external: true
+  prometheus-config:
+    external: true
+  prometheus-data:
+    external: true
+  grafana-data:
+    external: true
+  grafana-provisioning:
+    external: true
+
 networks:
   chinooknet:
     name: chinooknet

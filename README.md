@@ -26,16 +26,31 @@ Go to Settings -> Resources -> File sharing in Docker desktop application and ad
 ### Run dependencies
 - postgres
 - pgAdmin
+- prometheus
+- grafana
+
+**Note**: when run on Windows docker, the *BaseFolder* which will contain the docker data must be shared. 
+Go to Settings -> Resources -> File sharing in Docker desktop application and add this folder.
 
 ```
-docker-compose up
+.\start-infra.ps1 -BaseFolder "C:\docker\CleanArchitecture"
 ```
+
 ### Check the database and the tables
 * go to http://localhost:8080/ and log in with the user and password specified in the *docker-compose.yml*
 * add the server running in docker using the *user*: postgres and *password*: password
 ![pgAdmin-server](docs/images/pgAdmin-server.png)
 * check that database and the tables were created and populated with data
 ![pgAdmin-data](docs/images/pgAdmin-data.png)
+
+### Check that grafana and prometheus are accessible
+- go to http://localhost:3000
+    - Username: *admin*
+    - Password: *grafana*
+- go to http://localhost:9090
+
+
+
 
 ### Run application
 
@@ -126,9 +141,21 @@ A [Watchdog](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/
 
 - [Integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests) are implemented using **WebApplicationFactory** and test the entire stack using an in memory database. 
 Some good references can be found [here](https://andrewlock.net/converting-integration-tests-to-net-core-3/) and [here](https://adamstorr.azurewebsites.net/blog/integration-testing-with-aspnetcore-3-1-swapping-dependency-with-moq)
-## TODOs
 
+- Monitoring with [AppMetrics](https://github.com/AppMetrics/AppMetrics), Prometheus and Grafana based on the follwing tutorials : [Tutorial1](https://www.youtube.com/watch?v=sM7D8biBf4k) and [Tutorial2](https://alikhalili.me/blog/posts/appmetrics-prometheus-grafana-asp-core/). Prometheus is scrapping the metrics api (http://localhost:5000/metrics-text) and Grafana is used to visualize the metrics
+
+*Note*: seems that the protobuf formatter exposed at the /metrics endpoint does not work. The text formatter is used in the current setup.
+
+![AppMetrics](docs/images/AppMetrics.png)
+
+![Prometheus](docs/images/Prometheus.png)
+
+![Grafana](docs/images/Grafana.png)
+
+## TODOs
 - implement a selector capability
+- decide if models remain in Application or moved as versioned in Api
+- emit notifications
 - add documentation about the repository and unit of work
 - investigate if [Scrutor](https://github.com/khellang/Scrutor) can be used to achive something similar to StructureMap scan.Assembly("InfraStructure") [this article]() to remove the project reference from Api to Infrastructure project
 - CosmosDb persistence
