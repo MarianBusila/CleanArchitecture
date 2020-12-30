@@ -41,6 +41,7 @@ docker volume create --driver local -o o=bind -o type=none -o device="$BaseFolde
 docker volume create --driver local -o o=bind -o type=none -o device="$BaseFolder/prometheus/data" prometheus-data
 docker volume create --driver local -o o=bind -o type=none -o device="$BaseFolder/grafana/data" grafana-data
 docker volume create --driver local -o o=bind -o type=none -o device="$BaseFolder/grafana/provisioning" grafana-provisioning
+docker volume create --driver local -o o=bind -o type=none -o device="$BaseFolder/elasticsearch/data" elasticsearch-data
 
 Write-Host "Starting containers"
 docker-compose up -d

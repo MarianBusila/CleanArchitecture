@@ -7,12 +7,10 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Catalog.Api
 {
@@ -42,12 +40,6 @@ namespace Catalog.Api
                 .AddCheck("self", () => HealthCheckResult.Healthy());
             services.AddMetrics();
             services.ConfigureSwagger();
-            services.AddLogging(builder => 
-            { 
-                builder
-                .AddConsole()
-                .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information); 
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

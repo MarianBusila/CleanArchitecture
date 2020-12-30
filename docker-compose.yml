@@ -66,6 +66,39 @@ services:
     depends_on:
       - prometheus
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # Avoid test failures due to small disks.
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - chinooknet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.2
+    container_name: kibana
+    environment:
+      SERVER_NAME: localhost
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      - chinooknet
+    depends_on:
+      - elasticsearch
+
 volumes:
   pg-chinook-data:
     external: true
@@ -77,6 +110,9 @@ volumes:
     external: true
   grafana-provisioning:
     external: true
+  elasticsearch-data:
+    external: true
+
 
 networks:
   chinooknet:

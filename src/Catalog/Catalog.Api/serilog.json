@@ -1,0 +1,52 @@
+{
+  "Serilog": {
+    "Using": [
+      "Serilog.Sinks.Async",
+      "Serilog.Sinks.Console",
+      "Serilog.Sinks.ElasticSearch"
+    ],
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft": "Information",
+        "System": "Information"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "Console",
+              "Args": {
+                "outputTemplate": "[{Timestamp:HH:mm:ss.fff}] [{Level:u3}]: {Message}{NewLine}{Exception}"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Elasticsearch",
+        "Args": {
+          "nodeUris": "http://localhost:9200",
+          "minimumLogEventLevel": "Trace",
+          "emitEventFailure": "WriteToSelfLog",
+          "autoRegisterTemplate": true,
+          "overwriteTemplate": false,
+          "detectElasticsearchVersion": true,
+          "indexFormat": "catalog-{0:yyyy.MM.dd}"
+        }
+      }
+    ],
+    "Enrich": [
+      "FromLogContext",
+      "WithMachineName",
+      "WithProcessId",
+      "WithThreadId"
+    ],
+    "Properties": {
+      "ApplicationName": "Catalog"
+    }
+  }
+}

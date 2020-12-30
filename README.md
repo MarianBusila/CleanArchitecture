@@ -28,6 +28,8 @@ Go to Settings -> Resources -> File sharing in Docker desktop application and ad
 - pgAdmin
 - prometheus
 - grafana
+- elasticsearch
+- kibana
 
 **Note**: when run on Windows docker, the *BaseFolder* which will contain the docker data must be shared. 
 Go to Settings -> Resources -> File sharing in Docker desktop application and add this folder.
@@ -43,13 +45,15 @@ Go to Settings -> Resources -> File sharing in Docker desktop application and ad
 * check that database and the tables were created and populated with data
 ![pgAdmin-data](docs/images/pgAdmin-data.png)
 
-### Check that grafana and prometheus are accessible
+### Check that grafana and prometheus are running
 - go to http://localhost:3000
     - Username: *admin*
     - Password: *grafana*
 - go to http://localhost:9090
 
-
+### Check that elasticsearch and kibana are running
+- go to http://localhost:9200
+- go to http://localhost:5601
 
 
 ### Run application
@@ -151,6 +155,10 @@ Some good references can be found [here](https://andrewlock.net/converting-integ
 ![Prometheus](docs/images/Prometheus.png)
 
 ![Grafana](docs/images/Grafana.png)
+
+- [Serilog](https://github.com/serilog/serilog-aspnetcore) is used for logging to ELK stack based on [Tutorial1](https://codewithmukesh.com/blog/serilog-in-aspnet-core-3-1/), [Tutorial2](https://www.humankode.com/asp-net-core/logging-with-elasticsearch-kibana-asp-net-core-and-docker). 
+To visualize the logs in Kibana (http://localhost:5601), first we have to create an index *catalog-\**
+![Kibana](docs/images/Kibana.png)
 
 ## TODOs
 - implement a selector capability
