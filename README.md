@@ -147,7 +147,7 @@ services.AddHttpClient<ITracksClient, TracksClient>(client =>
 ### Health Checks
 - [Health Checks](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks) were added for the application itself and for the connection to the Postgres Sql Database. Note that the DBContext healthcheck was added in the depenedency injection of the Infrastructure project.
 A [Watchdog](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/monitor-app-health#use-watchdogs) service can be created to display the status of the services monitored
-![Watchdog](docs/images/HealthCheck-Watchdog.png)
+![Watchdog](docs/images/HealthCheck-WatchDog.png)
 
 ### Testing
 - [Integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests) are implemented using **WebApplicationFactory** and test the entire stack using an in memory database. 
