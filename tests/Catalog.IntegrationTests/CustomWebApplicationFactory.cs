@@ -23,7 +23,6 @@ namespace Catalog.IntegrationTests
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders(); // Remove other loggers
-                    logging.AddXUnit(Output); // Use the ITestOutputHelper instance
                 })
                 .ConfigureTestServices((services) =>
                 {

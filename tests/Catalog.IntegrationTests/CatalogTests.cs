@@ -9,6 +9,7 @@ using Catalog.Application.Tracks.Queries.GetTrack.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,6 +26,10 @@ namespace Catalog.IntegrationTests
             _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             _factory.Output = output;
             _client = _factory.CreateClient();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.TestOutput(output)
+                .CreateLogger();
         }
 
         public void Dispose() => _factory.Output = null;
