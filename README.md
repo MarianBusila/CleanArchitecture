@@ -182,6 +182,8 @@ Some good references can be found [here](https://andrewlock.net/converting-integ
 
 - the dependcency injection is done in the project where the actual implementations are done. For example the DI for automapper, mediatr and fluent validators is done in the Application project, the DI for the database connection + db health check and repository is done in Infrastructure, the DI for swagger, logging is done in the API
 
+- both Commands and Queries use the repository, but an alternative would be to use the repository for the Commands (using EF core for example) and use an IPlaylistsQuery (using Dapper which is faster than EFCore) for Queries. This [approach](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/cqrs-microservice-reads) is used in EShopOnContainers app in Ordering service. This approach is also helpful if the database for writes and reads is different.
+![CQRS](docs/images/CQRS.png)
 
 ## TODOs
 - implement a selector capability
