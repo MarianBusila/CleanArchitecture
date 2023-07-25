@@ -27,7 +27,7 @@ Write-Host "Drop and recreate any existing chinook database completed ..."
 Set-ConsoleForegroundColor Magenta | Out-Null
 Write-Host "`r`nRun migrations using Flyway started ..."
 $wd = Get-Location
-docker run --rm --network chinooknet -v $wd/data/migrations:/flyway/sql boxfuse/flyway:6 -url=jdbc:postgresql://172.22.0.5:5432/chinook -user=postgres -password=password migrate
+docker run --rm --network chinooknet -v $wd/data/migrations:/flyway/sql boxfuse/flyway -url=jdbc:postgresql://172.22.0.5:5432/chinook -user=postgres -password=password migrate
 Write-Host "Run migrations using Flyway completed ..."
 
 # Complete script

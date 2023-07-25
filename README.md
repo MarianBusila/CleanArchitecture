@@ -11,17 +11,6 @@ A clean architecture implementation based on different sources like [drminnaar](
 - docker-compose
 - dotnet core 3.1
 
-### Database setup
-Postgres is used to store the data releated to the service.
--  when run on Windows docker, the *data/migrations* folder must be shared. 
-Go to Settings -> Resources -> File sharing in Docker desktop application and add this folder.
-- run script to create the database and populate with data. The script will start postgres container,  drop / create the *chinook* database and apply the database migrations using [Flyway](https://flywaydb.org/)
-
-```
-# create database and apply migrations
-./refresh-chinook-db.ps1
-```
-
 ### Run dependencies
 - postgres
 - pgAdmin
@@ -30,11 +19,17 @@ Go to Settings -> Resources -> File sharing in Docker desktop application and ad
 - elasticsearch
 - kibana
 
-**Note**: when run on Windows docker, the *BaseFolder* which will contain the docker data must be shared. 
-Go to Settings -> Resources -> File sharing in Docker desktop application and add this folder.
-
 ```
 .\start-infra.ps1 -BaseFolder "C:\docker\CleanArchitecture"
+```
+
+### Database setup
+Postgres is used to store the data releated to the service.
+- run script to create the database and populate with data. The script will start postgres container,  drop / create the *chinook* database and apply the database migrations using [Flyway](https://flywaydb.org/)
+
+```
+# create database and apply migrations
+./refresh-chinook-db.ps1
 ```
 
 ### Check the database and the tables
