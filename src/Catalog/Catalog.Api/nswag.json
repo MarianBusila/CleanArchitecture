@@ -1,5 +1,5 @@
 {
-  "runtime": "Net60",
+  "runtime": "Net70",
   "defaultVariables": "CSharpOutputPath=..\\Catalog.Client",
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
