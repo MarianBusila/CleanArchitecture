@@ -33,9 +33,10 @@ namespace Catalog.Api
             services.ConfigureSql(_configuration.GetConnectionString("chinook"), _environment.IsDevelopment());
             services.ConfigureApplication();
             services.ConfigureUrlHelper();
-            services
-                .AddControllers()
-                .AddFluentValidation();
+            services.AddControllers();
+            
+            services.AddFluentValidationAutoValidation();
+            
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
             services.AddMetrics();
