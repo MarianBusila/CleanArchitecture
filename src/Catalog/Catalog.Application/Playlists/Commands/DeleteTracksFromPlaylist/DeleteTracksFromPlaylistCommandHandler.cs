@@ -18,7 +18,7 @@ namespace Catalog.Application.Playlists.Commands.DeleteTracksFromPlaylist
             _catalogRepository = catalogRepository ?? throw new ArgumentNullException(nameof(catalogRepository));
         }
 
-        public async Task<Unit> Handle(DeleteTracksFromPlaylistCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteTracksFromPlaylistCommand request, CancellationToken cancellationToken)
         {
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
@@ -28,8 +28,6 @@ namespace Catalog.Application.Playlists.Commands.DeleteTracksFromPlaylist
                 throw new EntityNotFoundException($"A playlist having id '{request.PlaylistId}' could not be found");
 
             await _catalogRepository.DeleteTracksFromPlaylist(playlistDomain, request.TrackIds, cancellationToken);
-
-            return Unit.Value;
         }
 
     }

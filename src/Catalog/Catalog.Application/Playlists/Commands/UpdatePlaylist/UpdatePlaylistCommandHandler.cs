@@ -21,7 +21,7 @@ namespace Catalog.Application.Playlists.Commands.CreatePlaylist
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<Unit> Handle(UpdatePlaylistCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdatePlaylistCommand request, CancellationToken cancellationToken)
         {
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
@@ -32,7 +32,6 @@ namespace Catalog.Application.Playlists.Commands.CreatePlaylist
 
             playlistDomain.Name = request.Name;
             await _catalogRepository.UpdatePlaylist(playlistDomain, request.TrackIds, cancellationToken);
-            return Unit.Value;
         }
 
     }
