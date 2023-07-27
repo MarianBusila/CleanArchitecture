@@ -2,7 +2,6 @@ using System;
 using Catalog.Api.DependencyInjection;
 using Catalog.Application.DependencyInjection;
 using Catalog.Infrastructure.DependencyInjection;
-using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -34,9 +33,7 @@ namespace Catalog.Api
             services.ConfigureApplication();
             services.ConfigureUrlHelper();
             services.AddControllers();
-            
-            services.AddFluentValidationAutoValidation();
-            
+
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
             services.AddMetrics();

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +27,7 @@ namespace Microsoft.AspNetCore.Builder
                     return error switch
                     {
                         EntityNotFoundException entityNotFoundException => HandleEntityNotFoundException(entityNotFoundException, httpContext),
+                        ValidationException validationException => HandleValidationException(validationException, httpContext),
                         _ => HandleUnknownException(error, httpContext, environment)
                     };
                 });
@@ -44,6 +48,29 @@ namespace Microsoft.AspNetCore.Builder
             httpContext.Response.ContentType = "application/problem+json";
             problemDetails.Extensions.Add("traceId", httpContext.TraceIdentifier);
             httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            //Serialize the problem details object to the Response as JSON (using System.Text.Json)
+            var stream = httpContext.Response.Body;
+            await JsonSerializer.SerializeAsync(stream, problemDetails);
+        }
+
+        private static async Task HandleValidationException(ValidationException validationException, HttpContext httpContext)
+        {
+            IDictionary<string, string[]> errors = validationException.Errors
+                .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
+                .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+
+            var problemDetails = new ValidationProblemDetails(errors)
+            {
+                Detail = validationException.Message,
+                Instance = string.Empty,
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation problems",
+                Type = $"https://httpstatuses.com/{StatusCodes.Status400BadRequest}",
+            };
+            // ProblemDetails has it's own content type
+            httpContext.Response.ContentType = "application/problem+json";
+            problemDetails.Extensions.Add("traceId", httpContext.TraceIdentifier);
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             //Serialize the problem details object to the Response as JSON (using System.Text.Json)
             var stream = httpContext.Response.Body;
             await JsonSerializer.SerializeAsync(stream, problemDetails);

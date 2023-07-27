@@ -77,9 +77,9 @@ The **Domain** layer contains enterprise logic and types and the **Application**
         public decimal Price { get; set; }
     ```
 
-    - using MediatR pipeline behaviour as described [here](https://timdows.com/projects/use-mediatr-with-fluentvalidation-in-the-asp-net-core-pipeline/) or using a nuget package like [MediatR.Extensions.FluentValidation.AspNetCore](https://github.com/GetoXs/MediatR.Extensions.FluentValidation.AspNetCore). EShopOnContainers uses this approach. The validators are defined on Commands  or Query objects in Application layer and a Domain exception is thrown which gets handled with an IExceptionFilter and a BadRequest response is produced
+    - using MediatR pipeline behaviour as described [here](https://code-maze.com/cqrs-mediatr-fluentvalidation/) and this is the one used in this repo. The validators are defined on Commands  or Query objects in Application layer and an exception is thrown which gets handled in a custom exception handler.
 
-    - using [Fluent Validation with AspNetCore](https://docs.fluentvalidation.net/en/latest/aspnet.html). This approach is more generic since it does not require MediatR and this is the one used in this repo. Note that if the WebApi layer is switched with another layer like a Console app, this validation will not work out of the box. So doing validation with Mediatr pipelines might be a better solution.
+    - using [Fluent Validation with AspNetCore](https://docs.fluentvalidation.net/en/latest/aspnet.html). This approach is more generic since it does not require MediatR. Note that if the WebApi layer is switched with another layer like a Console app, this validation will not work out of the box. So doing validation with Mediatr pipelines might be a better solution.
     Validation is implemented in the Application layer on the models bound by asp net core. When validation fails, a BadRequest response is sent using a ValidationProblemDetails model.
     ```json
     {

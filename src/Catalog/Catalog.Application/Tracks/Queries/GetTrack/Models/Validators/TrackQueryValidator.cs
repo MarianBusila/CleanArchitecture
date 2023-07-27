@@ -2,7 +2,7 @@
 
 namespace Catalog.Application.Tracks.Queries.GetTrack.Models.Validators
 {
-    public sealed class TrackQueryValidator : AbstractValidator<TrackQuery>
+    public sealed class TrackQueryValidator : AbstractValidator<GetTrackListQuery>
     {
 
         public TrackQueryValidator()
