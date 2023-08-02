@@ -7,14 +7,11 @@ using Xunit.Abstractions;
 namespace Catalog.Application.IntegrationTests;
 
 [Collection("Integration collection")]
-public class GetPlaylistListTests : IAsyncLifetime
+public class GetPlaylistListTests : BaseIntegrationTest
 {
-    private readonly Testing _testing;
 
-    public GetPlaylistListTests(Testing testing, ITestOutputHelper output)
+    public GetPlaylistListTests(Testing testing, ITestOutputHelper output) : base(testing, output)
     {
-        _testing = testing;
-        _testing.SetOutput(output);
     }
     
     [Fact]
@@ -67,15 +64,5 @@ public class GetPlaylistListTests : IAsyncLifetime
         // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
-    }
-
-    public async Task InitializeAsync()
-    {
-        await _testing.ResetState();
-    }
-
-    public Task DisposeAsync()
-    {
-        return Task.CompletedTask;
     }
 }
