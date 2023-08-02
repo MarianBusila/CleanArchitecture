@@ -58,6 +58,15 @@ dotnet build
 dotnet run
 ```
 
+### Create Database For Integration Tests
+- from a powershell command, run the following commands:
+```ps
+docker exec -it pg-chinook dropdb -h localhost -U postgres chinook_test
+docker exec -it pg-chinook createdb -h localhost -U postgres chinook_test
+$wd = Get-Location
+docker run --rm --network chinooknet -v $wd/data/migrations:/flyway/sql boxfuse/flyway -url=jdbc:postgresql://172.22.0.5:5432/chinook_test -user=postgres -password=password migrate
+```
+- note that this will also insert data in the tables, so it has to be deleted. Alternatively, remove the sql scripts from migrations folder that insert data
 ## Notes
 
 ### Clean architecture
