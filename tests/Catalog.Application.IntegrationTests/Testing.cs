@@ -1,6 +1,7 @@
 using Catalog.Infrastructure.Sql.Repositories;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Xunit.Abstractions;
 
 namespace Catalog.Application.IntegrationTests;
@@ -66,5 +67,9 @@ public class Testing
     public void SetOutput(ITestOutputHelper output)
     {
         _factory.Output = output;
+        
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.TestOutput(output)
+            .CreateLogger();
     }
 }
