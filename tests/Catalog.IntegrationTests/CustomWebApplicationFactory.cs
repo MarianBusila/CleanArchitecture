@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -34,13 +35,17 @@ namespace Catalog.IntegrationTests
 
                     services.Remove(descriptor);
 
-                    services.AddDbContextPool<CatalogDbContext>(options => { options.UseInMemoryDatabase("InMemoryDbForTesting"); });
-
+                    services.AddDbContext<CatalogDbContext>(options => { options.UseInMemoryDatabase("InMemoryDbForTesting"); });
+                    
                     /*
-                     // use this code to use an actual test sql database instead of in memory one
-                    services.AddDbContext<CatalogDbContext>((options, context) =>
+                    var configuration = new ConfigurationBuilder()
+                        .AddJsonFile("appsettings.json")
+                        .AddEnvironmentVariables()
+                        .Build();
+
+                    services.AddDbContext<CatalogDbContext>(options =>
                     {
-                        context.UseSqlServer(Configuration.GetConnectionString("TestingDbConnectionString"));
+                        options.UseNpgsql(configuration.GetConnectionString("chinook"));
                     });
                     */
 

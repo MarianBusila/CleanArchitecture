@@ -19,7 +19,7 @@ namespace Catalog.Infrastructure.DependencyInjection
             services.AddHealthChecks()
                 .AddDbContextCheck<CatalogDbContext>("Sql Database");
 
-            return services.AddDbContextPool<CatalogDbContext>(options => 
+            return services.AddDbContext<CatalogDbContext>(options => 
             { 
                 options.UseNpgsql(connectionString);
                 options.EnableDetailedErrors(isDevelopment);
