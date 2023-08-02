@@ -43,8 +43,7 @@ public class Testing
         await _database.ResetAsync();
     }
 
-    public async Task AddAsync<TEntity>(TEntity entity)
-        where TEntity : class
+    public async Task<TEntity> AddAsync<TEntity>(TEntity entity) where TEntity : class
     {
         using var scope = _scopeFactory.CreateScope();
 
@@ -53,6 +52,15 @@ public class Testing
         context.Add(entity);
 
         await context.SaveChangesAsync();
+
+        return entity;
+    }
+
+    public async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues) where TEntity : class
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        return await context.FindAsync<TEntity>(keyValues);
     }
 
     public void SetOutput(ITestOutputHelper output)

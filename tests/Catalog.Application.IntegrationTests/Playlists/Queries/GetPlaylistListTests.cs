@@ -25,13 +25,13 @@ public class GetPlaylistListTests : IClassFixture<Testing>, IAsyncLifetime
         await _testing.AddAsync( new Artist { Id = 1, Name = "Artist1" });
         await _testing.AddAsync( new Album { Id = 1, Title = "Album1", ArtistId = 1});
 
-        await _testing.AddAsync(new Track { Id = 1, Name = "Song1", MediaTypeId = 1, GenreId = 1, AlbumId = 1, UnitPrice = new decimal(0.99) });
-        await _testing.AddAsync(new Track { Id = 2, Name = "Song2", MediaTypeId = 1, GenreId = 2, AlbumId = 1, UnitPrice = new decimal(1.99) });
+        var track1 = await _testing.AddAsync(new Track { Name = "Song1", MediaTypeId = 1, GenreId = 1, AlbumId = 1, UnitPrice = new decimal(0.99) });
+        var track2 = await _testing.AddAsync(new Track { Name = "Song2", MediaTypeId = 1, GenreId = 2, AlbumId = 1, UnitPrice = new decimal(1.99) });
 
-        await _testing.AddAsync(new Playlist {Id = 1, Name = "Music 90s" });
+        var playlist = await _testing.AddAsync(new Playlist {Name = "Music 90s" });
         
-        await _testing.AddAsync(new PlaylistTrack { PlaylistId = 1, TrackId = 1 });
-        await _testing.AddAsync(new PlaylistTrack { PlaylistId = 1, TrackId = 2 });
+        await _testing.AddAsync(new PlaylistTrack { PlaylistId = playlist.Id, TrackId = track1.Id });
+        await _testing.AddAsync(new PlaylistTrack { PlaylistId = playlist.Id, TrackId = track2.Id });
         
         var query = new GetPlaylistListQuery(new PlaylistQuery());
 
@@ -50,13 +50,11 @@ public class GetPlaylistListTests : IClassFixture<Testing>, IAsyncLifetime
         // Arrange
         await _testing.AddAsync(new Playlist
         {
-            Id = 1,
             Name = "MJ"
         });
         
         await _testing.AddAsync(new Playlist
         {
-            Id = 2,
             Name = "ABBA"
         });
         
