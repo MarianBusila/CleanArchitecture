@@ -6,7 +6,8 @@ using Xunit.Abstractions;
 
 namespace Catalog.Application.IntegrationTests.Playlists.Commands;
 
-public class CreatePlaylistTests  : IClassFixture<Testing>, IAsyncLifetime
+[Collection("Integration collection")]
+public class CreatePlaylistTests  : IAsyncLifetime
 {
     private readonly Testing _testing;
     
@@ -34,14 +35,14 @@ public class CreatePlaylistTests  : IClassFixture<Testing>, IAsyncLifetime
     [Fact]
     public async Task ShouldCreatePlaylistWithTracks()
     {
-        await _testing.AddAsync( new Genre { Id = 1, Name = "Rock" });
-        await _testing.AddAsync( new Genre { Id = 2, Name = "Pop" });
-        await _testing.AddAsync( new MediaType { Id = 1, Name = "MP4" });
-        await _testing.AddAsync( new Artist { Id = 1, Name = "Artist1" });
-        await _testing.AddAsync( new Album { Id = 1, Title = "Album1", ArtistId = 1});
+        var rockGenre = await _testing.AddAsync( new Genre { Name = "Rock" });
+        var popGenre = await _testing.AddAsync( new Genre { Name = "Pop" });
+        var mediaType = await _testing.AddAsync( new MediaType { Name = "MP4" });
+        var artist = await _testing.AddAsync( new Artist { Name = "Artist1" });
+        var album = await _testing.AddAsync( new Album { Title = "Album1", ArtistId = artist.Id});
 
-        var track1 = await _testing.AddAsync(new Track { Name = "Song1", MediaTypeId = 1, GenreId = 1, AlbumId = 1, UnitPrice = new decimal(0.99) });
-        var track2 = await _testing.AddAsync(new Track { Name = "Song2", MediaTypeId = 1, GenreId = 2, AlbumId = 1, UnitPrice = new decimal(1.99) });
+        var track1 = await _testing.AddAsync(new Track { Name = "Song1", MediaTypeId = mediaType.Id, GenreId = rockGenre.Id, AlbumId = album.Id, UnitPrice = new decimal(0.99) });
+        var track2 = await _testing.AddAsync(new Track { Name = "Song2", MediaTypeId = mediaType.Id, GenreId = popGenre.Id, AlbumId = album.Id, UnitPrice = new decimal(1.99) });
         
         var command = new CreatePlaylistCommand(new PlaylistForCreate
         {
