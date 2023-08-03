@@ -33,6 +33,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             services
                 .RemoveAll<DbContextOptions<CatalogDbContext>>()
+                .RemoveAll<CatalogDbContextInitializer>()
                 .AddDbContext<CatalogDbContext>(options =>
                 {
                     options.UseNpgsql(_connection);

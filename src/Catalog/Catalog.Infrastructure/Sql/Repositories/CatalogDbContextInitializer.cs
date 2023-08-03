@@ -16,7 +16,9 @@ public static class InitializerExtensions
     {
         using var scope = app.ApplicationServices.CreateScope();
 
-        var initializer = scope.ServiceProvider.GetRequiredService<CatalogDbContextInitializer>();
+        var initializer = scope.ServiceProvider.GetService<CatalogDbContextInitializer>();
+        if (initializer == null) return;
+        
         initializer.Initialize();
         initializer.Seed();
     }

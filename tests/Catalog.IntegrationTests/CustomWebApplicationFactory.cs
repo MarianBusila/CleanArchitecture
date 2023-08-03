@@ -34,6 +34,7 @@ namespace Catalog.IntegrationTests
                     var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<CatalogDbContext>));
 
                     services.Remove(descriptor);
+                    services.RemoveAll<CatalogDbContextInitializer>();
 
                     services.AddDbContext<CatalogDbContext>(options => { options.UseInMemoryDatabase("InMemoryDbForTesting"); });
                     
