@@ -27,7 +27,8 @@ namespace Catalog.Infrastructure.DependencyInjection
             })
                 .AddScoped<IPlaylistFilter, LinqPlaylistFilter>()
                 .AddScoped<ITrackFilter, LinqTrackFilter>()
-                .AddScoped<ICatalogRepository, CatalogRepository>();
+                .AddScoped<ICatalogRepository, CatalogRepository>()
+                .AddScoped<CatalogDbContextInitializer>();
         }
     }
 }

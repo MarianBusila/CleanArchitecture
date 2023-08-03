@@ -23,14 +23,25 @@ A clean architecture implementation based on different sources like [drminnaar](
 .\start-infra.ps1 -BaseFolder "C:\docker\CleanArchitecture"
 ```
 
-### Database setup
-Postgres is used to store the data releated to the service.
-- run script to create the database and populate with data. The script will start postgres container,  drop / create the *chinook* database and apply the database migrations using [Flyway](https://flywaydb.org/)
+### Database
 
+Postgres is used to store the data related to the service.
+
+Recently the project is using EFCore migrations instead of Flyway. There is no data seeded into the database.
+The migrations are automatically applied when app starts. That is acceptable for a proof of concept, but if the service will run in multiple instances, this can lead to several migrations happen in parallel.
+It is recommended, to have a standalone console app, that will call perform the migration in a CICD pipeline, and then the instances of the app are deployed.
+
+```csharp
+await _context.Database.MigrateAsync();
 ```
-# create database and apply migrations
-./refresh-chinook-db.ps1
+
+To create the migrations, the following command was used:
 ```
+dotnet ef migrations add InitialCreate --project src\Catalog\Catalog.Infrastructure --startup-project src\Catalog\Catalog.Api --output-dir Data\Migrations
+```
+
+
+- ~~ run script refresh-chinook-db.ps1 to create the database and populate with data. The script will start postgres container,  drop / create the *chinook* database and apply the database migrations using [Flyway](https://flywaydb.org/) ~~
 
 ### Check the database and the tables
 * go to http://localhost:8080/ and log in with the user and password specified in the *docker-compose.yml*
@@ -58,15 +69,6 @@ dotnet build
 dotnet run
 ```
 
-### Create Database For Integration Tests
-- from a powershell command, run the following commands:
-```ps
-docker exec -it pg-chinook dropdb -h localhost -U postgres chinook_test
-docker exec -it pg-chinook createdb -h localhost -U postgres chinook_test
-$wd = Get-Location
-docker run --rm --network chinooknet -v $wd/data/migrations:/flyway/sql boxfuse/flyway -url=jdbc:postgresql://172.22.0.5:5432/chinook_test -user=postgres -password=password migrate
-```
-- note that this will also insert data in the tables, so it has to be deleted. Alternatively, remove the sql scripts from migrations folder that insert data
 ## Notes
 
 ### Clean architecture

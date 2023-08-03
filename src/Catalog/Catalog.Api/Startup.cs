@@ -2,6 +2,7 @@ using System;
 using Catalog.Api.DependencyInjection;
 using Catalog.Application.DependencyInjection;
 using Catalog.Infrastructure.DependencyInjection;
+using Catalog.Infrastructure.Sql.Repositories;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -66,6 +67,8 @@ namespace Catalog.Api
                     }
                     );
             });
+
+            app.InitilizeDatabase();
         }
     }
 }

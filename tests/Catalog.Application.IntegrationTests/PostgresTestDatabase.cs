@@ -2,6 +2,8 @@ using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using Respawn;
 using Ardalis.GuardClauses;
+using Catalog.Infrastructure.Sql.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Respawn.Graph;
 
@@ -31,11 +33,19 @@ public class PostgresTestDatabase : ITestDatabase
     {
         _connection = new NpgsqlConnection(_connectionString);
         await _connection.OpenAsync();
+        
+        // migrate database
+        var options = new DbContextOptionsBuilder<CatalogDbContext>()
+            .UseNpgsql(_connectionString)
+            .Options;
+        var context = new CatalogDbContext(options);
+        await context.Database.MigrateAsync();
 
         _respawner = await Respawner.CreateAsync(_connection, new RespawnerOptions
         {
             DbAdapter = DbAdapter.Postgres,
-            SchemasToInclude = new[] { "music_catalog"}
+            SchemasToInclude = new[] { "music_catalog"},
+            TablesToIgnore = new Table[] { "__EFMigrationsHistory" }
         });
     }
 
