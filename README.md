@@ -27,9 +27,10 @@ A clean architecture implementation based on different sources like [drminnaar](
 
 Postgres is used to store the data related to the service.
 
-Recently the project is using EFCore migrations instead of Flyway. There is no data seeded into the database.
+Recently the project is using EFCore migrations instead of Flyway.
 The migrations are automatically applied when app starts. That is acceptable for a proof of concept, but if the service will run in multiple instances, this can lead to several migrations happen in parallel.
 It is recommended, to have a standalone console app, that will call perform the migration in a CICD pipeline, and then the instances of the app are deployed.
+Some sample data is seeded also at startup.
 
 ```csharp
 await _context.Database.MigrateAsync();
