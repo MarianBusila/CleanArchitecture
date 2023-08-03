@@ -160,6 +160,7 @@ A [Watchdog](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/
 - [Integration tests](https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests) are implemented using **WebApplicationFactory** and test the entire stack using an in memory database. 
 Some good references can be found [here](https://andrewlock.net/converting-integration-tests-to-net-core-3/) and [here](https://adamstorr.azurewebsites.net/blog/integration-testing-with-aspnetcore-3-1-swapping-dependency-with-moq)
 - these kind of tests allow to test also the DI (Startup class) and allows to swap only some dependencies.
+- integration tests were added also for the Application layer that also tests the infrastructure and the DI. These tests can work with a local postgres database or using *testcontainers* nuget package. It is debatable, if these [subcutaneus tests](https://www.youtube.com/watch?v=hV43fiHYBb4) (Application -> Infrastructure) are more valuable than full stack tests (WebApi -> Application -> Infrastructure).
 
 ### Best practices
 - use Swagger embedded in Microsoft packages and not a third party library
